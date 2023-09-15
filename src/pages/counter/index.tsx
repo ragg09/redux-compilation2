@@ -1,4 +1,4 @@
-import { decrement, increment } from '@/features/counter/counterSlice';
+import { decrement, increment } from '@/redux/features/counter/counterSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import Container from '@/shared/components/Container';
 

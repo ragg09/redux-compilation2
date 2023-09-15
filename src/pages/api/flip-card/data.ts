@@ -1,14 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { type FlipCardData } from '@/shared/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface Data {
-  name: string
+const handler = (req: NextApiRequest, res: NextApiResponse<FlipCardData[]>): void => {
+  // Create an array to store the data objects
+  const data: FlipCardData[] = [];
+
+  // Generate 10 data objects
+  for (let id = 1; id <= 10; id++) {
+    data.push({
+      id,
+      image: `${id}.jpg`,
+      alt: `image ${id}`,
+    });
+  }
+
+  res.status(200).json(data);
 };
 
-export default function handler (
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'Testing Data' });
-}
+export default handler;
