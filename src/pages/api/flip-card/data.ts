@@ -11,6 +11,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse<FlipCardData[]>): voi
       id,
       image: `${id}.jpg`,
       alt: `image ${id}`,
+      isFlipped: false,
     });
   }
 
