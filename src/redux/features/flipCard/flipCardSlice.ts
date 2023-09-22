@@ -5,29 +5,21 @@ export interface flipCardState {
   cards: FlipCardData[];
   moveCount: number;
   openCard: number[];
+  totalGame: number,
 }
 
 const initialState: flipCardState = {
   cards: [],
   moveCount: 0,
-  openCard: []
+  openCard: [],
+  totalGame: 0
 };
 
 export const flipCardSlice = createSlice({
   name: 'flipCard',
   initialState,
   reducers: {
-    reset: () => initialState,
-    addCards: (state, action: PayloadAction<FlipCardData[]>) => {
-      state.cards.push(...action.payload);
-    },
-    flipCard: (state, action: PayloadAction<number>) => {
-      const card = state.cards.find((c) => c.tempID === action.payload);
-      if (card) {
-        state.openCard.push(action.payload);
-        card.isFlipped = !card.isFlipped;
-      }
-    },
+    resetFlipCardGame: () => initialState,
     resetOpenCards: (state) => {
       const [firstId, secondId, thirdId] = state.openCard;
       const firstCard = state.cards.find((card) => card.tempID === firstId);
@@ -84,12 +76,30 @@ export const flipCardSlice = createSlice({
         }
       }
     },
-    incrementMoveCount: (state) => {
+    nextRound: (state) => {
+      state.cards = [];
+      state.moveCount = 0;
+      state.openCard = [];
+    },
+    addCards: (state, action: PayloadAction<FlipCardData[]>) => {
+      state.cards.push(...action.payload);
+    },
+    flipCard: (state, action: PayloadAction<number>) => {
+      const card = state.cards.find((c) => c.tempID === action.payload);
+      if (card) {
+        state.openCard.push(action.payload);
+        card.isFlipped = !card.isFlipped;
+      }
+    },
+    countFlipMove: (state) => {
       state.moveCount += 1;
+    },
+    countGameOver: (state) => {
+      state.totalGame += 1;
     },
   },
 });
 
-export const { reset, addCards, flipCard, resetOpenCards, incrementMoveCount } = flipCardSlice.actions;
+export const { resetFlipCardGame, addCards, flipCard, resetOpenCards, countFlipMove, countGameOver, nextRound } = flipCardSlice.actions;
 
 export default flipCardSlice.reducer;
