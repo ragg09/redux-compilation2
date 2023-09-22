@@ -1,13 +1,8 @@
-/* eslint-disable @typescript-eslint/indent */
-import {
-  addCards,
-  countGameOver,
-  nextRound,
-  resetOpenCards,
-} from '@/redux/features/flipCard/flipCardSlice';
+import { addCards, countGameOver, resetOpenCards } from '@/redux/features/flipCard/flipCardSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { useGetFlipCardsQuery } from '@/redux/services/flipCardAPI';
 import FlipCardGameHeader from '@/sections/flip-card/FlipCardGameHeader';
+import FlipCardGameOver from '@/sections/flip-card/FlipCardGameOver';
 import Card from '@/shared/components/Card';
 import FlippingCard from '@/shared/components/Card/FlippingCard';
 import Container from '@/shared/components/Container';
@@ -41,10 +36,8 @@ const FlipCard: React.FC = () => {
   useEffect(() => {
     if (cardData.every((card) => card.isFlipped) && openCard.length > 0) {
       setTimeout(() => {
-        alert('WIN');
         dispatch(countGameOver());
-        dispatch(nextRound());
-      }, 1000);
+      }, 500);
     }
   }, [cardData, openCard]);
 
@@ -61,6 +54,8 @@ const FlipCard: React.FC = () => {
           <FlippingCard key={card.tempID} card={card} />
         ))}
       </Card>
+
+      <FlipCardGameOver />
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import { type FlipCardData } from '@/shared/utils';
+import { alertSuccess, type FlipCardData } from '@/shared/utils';
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface flipCardState {
@@ -6,13 +6,15 @@ export interface flipCardState {
   moveCount: number;
   openCard: number[];
   totalGame: number,
+  isGameOver: boolean
 }
 
 const initialState: flipCardState = {
   cards: [],
   moveCount: 0,
   openCard: [],
-  totalGame: 0
+  totalGame: 0,
+  isGameOver: false
 };
 
 export const flipCardSlice = createSlice({
@@ -25,6 +27,8 @@ export const flipCardSlice = createSlice({
       const firstCard = state.cards.find((card) => card.tempID === firstId);
       const secondCard = state.cards.find((card) => card.tempID === secondId);
       const thirdCard = state.cards.find((card) => card.tempID === thirdId);
+      const successMessages = ['Nice move!', 'Sweet!', 'Almost there!'];
+      const randomMessage = successMessages[Math.floor(Math.random() * successMessages.length)];
 
       if (state.openCard.length === 2) {
         if (firstCard && secondCard && firstCard.tempID === secondCard.tempID) {
@@ -49,7 +53,7 @@ export const flipCardSlice = createSlice({
               card.isFlipped = true;
             }
           });
-
+          alertSuccess(randomMessage, 'top-right');
           state.openCard = [thirdId];
         } else if (secondCard?.id === thirdCard?.id) {
           state.cards.forEach((card) => {
@@ -61,7 +65,7 @@ export const flipCardSlice = createSlice({
               card.isFlipped = false;
             }
           });
-
+          alertSuccess(randomMessage, 'top-right');
           state.openCard = [];
         } else if (firstCard?.id === secondCard?.id && secondCard?.id === thirdCard?.id) {
           state.openCard = [];
@@ -80,6 +84,7 @@ export const flipCardSlice = createSlice({
       state.cards = [];
       state.moveCount = 0;
       state.openCard = [];
+      state.isGameOver = false;
     },
     addCards: (state, action: PayloadAction<FlipCardData[]>) => {
       state.cards.push(...action.payload);
@@ -95,6 +100,7 @@ export const flipCardSlice = createSlice({
       state.moveCount += 1;
     },
     countGameOver: (state) => {
+      state.isGameOver = true;
       state.totalGame += 1;
     },
   },

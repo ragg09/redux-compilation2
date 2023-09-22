@@ -43,6 +43,15 @@ const DemoTester: React.FC = () => {
           <Headings option="h6" text="h6 text" />
         </Card>
       </Card>
+
+      <Card>
+        <Headings option="h6" text="Modal" />
+        <p className="mb-2">
+          Modal Must have separate button to control the visibility, it is advisable to put the
+          modal and button to its specific section for maintainability
+        </p>
+        <Card>. . . Modal demo Here</Card>
+      </Card>
     </Container>
   );
 };
